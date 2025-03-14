@@ -46,7 +46,7 @@ public class GetUrl extends Base {
 
         driver.get("https://www.google.com/");
         Set<String> str = driver.getWindowHandles();
-
+        System.out.println("test");
         for(String s : str){
             driver.switchTo().window(s);
             if(driver.getTitle().equals("Google")){
