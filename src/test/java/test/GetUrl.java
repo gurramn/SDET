@@ -6,6 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utilities.Base;
@@ -61,6 +62,8 @@ public class GetUrl extends Base {
                 break;
             }
         }
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "abc");
         JavascriptExecutor js = (JavascriptExecutor)driver;
         js.executeScript("alert('this is a test alert accept it')");
         Thread.sleep(2000);

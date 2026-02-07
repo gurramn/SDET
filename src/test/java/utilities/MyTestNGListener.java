@@ -2,14 +2,23 @@ package utilities;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.markuputils.Markup;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.io.File;
+import java.io.IOException;
+
 public class MyTestNGListener extends Base implements ITestListener {
 
-
+    WebDriver driver;
     public void onTestStart(ITestResult result) {
         test = reports.createTest(result.getMethod().getMethodName());
         test.info("test started");
@@ -33,6 +42,16 @@ public class MyTestNGListener extends Base implements ITestListener {
      */
     public void onTestFailure(ITestResult result) {
         // not implemented
+        TakesScreenshot ts = (TakesScreenshot)driver;
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        String dest = System.getProperty("user.dir")+"/Extent/Screenshot"+result.getName();
+        File destination = new File(dest);
+        try {
+            FileUtils.copyFile(source,destination);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        test.fail(MediaEntityBuilder.createScreenCaptureFromPath(dest).build());
     }
 
     /**
